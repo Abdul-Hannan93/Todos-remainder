@@ -1,0 +1,20 @@
+void iDraw() {
+	//place your drawing codes here
+	iClear();
+	iSetColor(123, 123, 123);
+	//iFilledCircle(x, y, r);
+	iRectangle(50, 340, 600, 40);
+	iSetColor(20, 200, 0);
+	iText(160,360 , "Enter the time and date of your event",GLUT_BITMAP_TIMES_ROMAN_24);
+	iRectangle(50, 290, 600, 40);
+	iSetColor(20, 200, 0);
+	iText(230,310 , "Your activity you have to do",GLUT_BITMAP_TIMES_ROMAN_24);
+	iRectangle(50, 240, 600, 40);
+	iSetColor(20, 200, 0);
+	iText(160,260, "History about the activity of last month",GLUT_BITMAP_TIMES_ROMAN_24);
+	iRectangle(50, 190, 600, 40);
+	iSetColor(20, 200, 0);
+	iText(320,210, "Settings",GLUT_BITMAP_TIMES_ROMAN_24);
+    
+    
+}
