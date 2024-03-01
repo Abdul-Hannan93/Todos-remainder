@@ -12,7 +12,7 @@ int nick = 0;
 int search = 0;
 int add_task = 0, guideline = 0;
 int mood = 0;
-int dark_mood_on = 0;
+int dark_mood_on = 1;
 int ringtone_mood = 0;
 int uefa = 1, nokia = 0, random = 0, show_reminder = 0;
 int musicOn = 1;
@@ -22,9 +22,10 @@ char *found;
 int very = 0, medium = 0, less = 0, priority = 1;
 char str[1000] = {0};
 
-int str_Index = -1, str_Index1 = -1, str_Index2 = -1, str_Index3 = -1;
+int str_Index = -1, str_Index1 = -1, str_Index2 = -1, str_Index3 = -1, str_Index4 = -1;
 char str1[1000] = {0};
 char str2[1000] = {0};
+char str4[1000] = {0};
 char str3[1000] = {0};
 char red[100] = {0};
 int isCalled = 1;
@@ -35,6 +36,7 @@ int time_on = 0;
 int key_Board = 0;
 int key_Board2 = 0;
 int key_Board3 = 0;
+int key_Board4 = 0;
 int next = 1;
 int x = 1000, y = 300, r = 20;
 char bc[1][20] = {"12.bmp"};
@@ -179,6 +181,22 @@ void taking_input(unsigned char key)
 		{
 			str_Index3++;
 			str3[str_Index3] = key;
+		}
+	}
+	if (key_Board4 == 1)
+	{
+		if (key == '\b')
+		{
+			if (str_Index4 >= 0)
+			{
+				str4[str_Index4] = '\0';
+				str_Index4--;
+			}
+		}
+		else
+		{
+			str_Index4++;
+			str4[str_Index4] = key;
 		}
 	}
 }
@@ -413,13 +431,13 @@ void iDraw()
 			{
 				flag = 1;
 
-				iText(70, y_axis, token, GLUT_BITMAP_TIMES_ROMAN_24);
+				iText(70, y_axis, token, GLUT_BITMAP_HELVETICA_18);
 
 				token = strtok(NULL, "&&");
-				iText(305, y_axis, token, GLUT_BITMAP_TIMES_ROMAN_24);
+				iText(305, y_axis, token,GLUT_BITMAP_HELVETICA_18);
 
 				token = strtok(NULL, "&&");
-				iText(550, y_axis, token, GLUT_BITMAP_TIMES_ROMAN_24);
+				iText(550, y_axis, token, GLUT_BITMAP_HELVETICA_18);
 				y_axis -= 40;
 			}
 
@@ -522,14 +540,57 @@ void iDraw()
 		{
 			iSetColor(0, 0, 0);
 		}
+		iText(200, 350, "Enter the name of your event", GLUT_BITMAP_TIMES_ROMAN_24);
 		iSetColor(150, 150, 150);
-		iFilledRectangle(160, 320, 90, 40);
-		iSetColor(0, 0, 0);
-		iText(180, 335, "Daily", GLUT_BITMAP_TIMES_ROMAN_24);
+		iFilledRectangle(130, 300, 450, 40);
 		iSetColor(150, 150, 150);
-		iFilledRectangle(420, 320, 120, 40);
+		iFilledRectangle(50,150, 600, 100);
 		iSetColor(0, 0, 0);
-		iText(440, 335, "Monthly", GLUT_BITMAP_TIMES_ROMAN_24);
+		iText(150, 314, str4, GLUT_BITMAP_TIMES_ROMAN_24);
+		FILE *fp5;
+
+		fp5 = fopen("my name is khan.txt", "r");
+		if (dark_mood_on == 1)
+		{
+			iSetColor(255, 255, 255);
+		}
+		if (dark_mood_on == 0)
+		{
+			iSetColor(0, 0, 0);
+		}
+
+		char line[100];
+		int y_axis = 200;
+		char *token;
+	
+		iText(50, 275, "The note you entered is given below:", GLUT_BITMAP_TIMES_ROMAN_24);
+		
+          iSetColor(0, 0, 0);
+		 while(fgets(line,100,fp5)!=NULL)
+		{
+
+			token = strtok(line, "&&");
+
+			if (strcmp(str4,token) == 0)
+			{
+				
+
+				
+
+				token = strtok(NULL, "&.");
+				iText(100, y_axis, token, GLUT_BITMAP_TIMES_ROMAN_24);
+
+				
+				y_axis -= 80;
+			}
+
+			token = strtok(NULL, "&.");
+			
+		}
+		 
+		
+
+		fclose(fp5);
 
 		iShowBMP2(285, 80, back[0], 0);
 	}
@@ -769,9 +830,17 @@ void iMouse(int button, int state, int mx, int my)
 	{
 		nick = 1;
 	}
+	if ((button == GLUT_LEFT_BUTTON) && (add_task == 0)  && (search == 0)&&(nick==1)&& (mx >= 250) && (mx <= 400) && (my >= 300) && (my <= 340))
+	{
+		key_Board2 = 0;
+		key_Board = 0;
+		key_Board4= 1;
+		key_Board3=0;
+	}
 	if ((button == GLUT_LEFT_BUTTON) && (guideline == 0) && (mood == 0) && (nick == 1) && (settings_mode == 0) && (mx >= 285) && (mx <= 365) && (my >= 80) && (my <= 120))
 	{
-		nick = 0; // coming back from settings
+		nick = 0;
+		key_Board4=0; // coming back from settings
 	}
 	if ((button == GLUT_LEFT_BUTTON) && (settings_mode == 1) && (show_reminder == 0) && (mx >= 250) && (mx <= 400) && (my >= 340) && (my <= 380))
 	{
@@ -890,6 +959,22 @@ void iKeyboard(unsigned char key)
 
 			memset(str3, 0, sizeof(str3));
 			str_Index3 = -1;
+		}
+	}
+	if (key_Board4 == 1)
+	{
+
+		taking_input(key);
+	}
+
+	if (key_Board4 == 1)
+	{
+		if (key == '\r')
+		{
+			// add_task_to_text_file();
+
+			memset(str4, 0, sizeof(str4));
+			str_Index4 = -1;
 		}
 	}
 
